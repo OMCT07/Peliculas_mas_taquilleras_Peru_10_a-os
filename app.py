@@ -367,10 +367,29 @@ with st.spinner("Preparando la información..."):
     base_completa, errores = cargar_base_completa()
 
 if base_completa.empty:
-    st.error(
-        "No fue posible leer los archivos. Revisa que la carpeta "
-        "`data` esté dentro del repositorio y contenga los Excel."
-    )
+
+    st.error("No fue posible cargar los archivos.")
+
+    st.write("Ruta donde la aplicación está buscando los datos:")
+    st.code(str(CARPETA_DATOS))
+
+    st.write("¿Existe la carpeta?")
+    st.write(CARPETA_DATOS.exists())
+
+    if CARPETA_DATOS.exists():
+
+        st.write("Archivos encontrados:")
+
+        for archivo in CARPETA_DATOS.iterdir():
+            st.write(archivo.name)
+
+    st.write("Errores detectados:")
+
+    if errores:
+        for error in errores:
+            st.error(error)
+
+    st.stop()
 
     if errores:
         for error in errores:
